@@ -18,35 +18,24 @@ import com.app.HandyMan.Entity.SupportTicket;
 import com.app.HandyMan.Entity.User;
 import com.app.HandyMan.Enums.PaymentMethod;
 import com.app.HandyMan.Enums.PaymentStatus;
-import com.app.HandyMan.Repository.AdminRepo;
-import com.app.HandyMan.Repository.BookingRepo;
 import com.app.HandyMan.Repository.HandymanRepo;
-import com.app.HandyMan.Repository.JobRepo;
-import com.app.HandyMan.Repository.NotificationRepo;
-import com.app.HandyMan.Repository.PaymentRepo;
-import com.app.HandyMan.Repository.ReviewRepo;
-import com.app.HandyMan.Repository.ServiceCategoryRepo;
-import com.app.HandyMan.Repository.SupportTicketRepo;
 import com.app.HandyMan.Repository.UserRepo;
 import com.app.HandyMan.Service.AdminService;
 import com.app.HandyMan.Service.BookingService;
-import com.app.HandyMan.Service.HandymanService;
 import com.app.HandyMan.Service.JobService;
 import com.app.HandyMan.Service.NotificationService;
 import com.app.HandyMan.Service.PaymentService;
 import com.app.HandyMan.Service.ReviewService;
 import com.app.HandyMan.Service.ServiceCategoryService;
 import com.app.HandyMan.Service.SupportTicketService;
-import com.app.HandyMan.Service.UserService;
 
-import java.util.Arrays;
 
 @Component
 public class DataLoader implements CommandLineRunner {
 
-	@Autowired private UserService userService;
+	@Autowired private UserRepo userService;
     @Autowired private AdminService adminService;
-    @Autowired private HandymanService handymanService;
+    @Autowired private HandymanRepo handymanService;
     @Autowired private ServiceCategoryService serviceCategoryService;
     @Autowired private JobService jobService;
     @Autowired private BookingService bookingService;
@@ -58,8 +47,8 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 //        // --- USERS ---
-//        User u1 = new User(); u1.setName("Yuvraj Singh Paliwal"); u1.setEmail("yuvi@gmail.com"); u1.setPhone("9876543210"); u1.setPassword("Yuvi@123");
-//        User u2 = new User(); u2.setName("Navpreet Singh panesar"); u2.setEmail("nav@example.com"); u2.setPhone("9123456780"); u2.setPassword("Nav@123");
+//        User u1 = new User(); u1.setName("Yuvraj Singh Paliwal"); u1.setEmail("yuvi@gmail.com"); u1.setPhone("9876543210"); u1.setPassword("$2a$12$X7WPpKQqRujyhojXy26KfucocyL.znsejBUlsxVN.krbiJZLcFO4G");
+//        User u2 = new User(); u2.setName("Navpreet Singh panesar"); u2.setEmail("nav@example.com"); u2.setPhone("9123456780"); u2.setPassword("$2a$12$9OeQVCIxlgFELSSGHs7CyOZvILodzR4AFIAyTJR4Kfdq1XQ/A8HeS");
 //        User u3 = new User(); u3.setName("John Doe"); u3.setEmail("john@example.com"); u3.setPhone("9988776655");
 //        User u4 = new User(); u4.setName("Priya Singh"); u4.setEmail("priya@example.com"); u4.setPhone("9000000000");
 //        User u5 = new User(); u5.setName("Aman Verma"); u5.setEmail("aman@example.com"); u5.setPhone("9111111111");
@@ -82,16 +71,143 @@ public class DataLoader implements CommandLineRunner {
 //        adminService.save(a5);
 //
 //        // --- HANDYMEN ---
-//        Handyman h1 = new Handyman(); h1.setName("Raj Electrician"); h1.setContactDetails("9871112222"); h1.setLocation("Delhi");
-//        Handyman h2 = new Handyman(); h2.setName("Amit Plumber"); h2.setContactDetails("9873334444"); h2.setLocation("Noida");
-//        Handyman h3 = new Handyman(); h3.setName("Suresh Carpenter"); h3.setContactDetails("9875556666"); h3.setLocation("Gurgaon");
-//        Handyman h4 = new Handyman(); h4.setName("Vikas Painter"); h4.setContactDetails("9877778888"); h4.setLocation("Delhi");
-//        Handyman h5 = new Handyman(); h5.setName("Manish AC Mechanic"); h5.setContactDetails("9879990000"); h5.setLocation("Faridabad");
+//        Handyman h1 = new Handyman();
+//        h1.setName("Raj Electrician");
+//        h1.setContactDetails("9871112222");
+//        h1.setEmail("raj.electrician@example.com");
+//        h1.setPassword("securePass123");
+//        h1.setProfilePhoto("raj_photo.jpg");
+//        h1.setExperience("5 years");
+//        h1.setCertifications("Certified Electrician");
+//        h1.setPortfolio("portfolio_raj.pdf");
+//        h1.setAvailability("Mon-Fri 9am-6pm");
+//        h1.setLocation("Delhi");
+//        h1.setAddressLine("123 Electrician St");
+//        h1.setCity("Delhi");
+//        h1.setState("Delhi");
+//        h1.setCountry("India");
+//        h1.setPostalCode("110001");
+//        h1.setLatitude(28.7041);
+//        h1.setLongitude(77.1025);
+//        h1.setRating(4.5);
+//        h1.setEarnings(25000.0);
+//        h1.setSkills("Electrical Wiring, Repair, Installation");
+//        h1.setHourlyRate(400.0);
+//        h1.setVerificationStatus(true);
+//        h1.setLanguages("Hindi, English");
+//        h1.setCompletedJobsCount(220);
+//
+//        Handyman h2 = new Handyman();
+//        h2.setName("Amit Plumber");
+//        h2.setContactDetails("9873334444");
+//        h2.setEmail("amit.plumber@example.com");
+//        h2.setPassword("securePass456");
+//        h2.setProfilePhoto("amit_photo.jpg");
+//        h2.setExperience("7 years");
+//        h2.setCertifications("Licensed Plumber");
+//        h2.setPortfolio("portfolio_amit.pdf");
+//        h2.setAvailability("Mon-Sat 8am-5pm");
+//        h2.setLocation("Noida");
+//        h2.setAddressLine("456 Plumbing Rd");
+//        h2.setCity("Noida");
+//        h2.setState("Uttar Pradesh");
+//        h2.setCountry("India");
+//        h2.setPostalCode("201301");
+//        h2.setLatitude(28.5355);
+//        h2.setLongitude(77.3910);
+//        h2.setRating(4.7);
+//        h2.setEarnings(37000.0);
+//        h2.setSkills("Pipe Installation, Leak Repair, Drain Cleaning");
+//        h2.setHourlyRate(350.0);
+//        h2.setVerificationStatus(true);
+//        h2.setLanguages("Hindi, English");
+//        h2.setCompletedJobsCount(310);
+//
+//        Handyman h3 = new Handyman();
+//        h3.setName("Suresh Carpenter");
+//        h3.setContactDetails("9875556666");
+//        h3.setEmail("suresh.carpenter@example.com");
+//        h3.setPassword("securePass789");
+//        h3.setProfilePhoto("suresh_photo.jpg");
+//        h3.setExperience("10 years");
+//        h3.setCertifications("Certified Carpenter");
+//        h3.setPortfolio("portfolio_suresh.pdf");
+//        h3.setAvailability("Tue-Sun 9am-7pm");
+//        h3.setLocation("Gurgaon");
+//        h3.setAddressLine("789 Carpenter Blvd");
+//        h3.setCity("Gurgaon");
+//        h3.setState("Haryana");
+//        h3.setCountry("India");
+//        h3.setPostalCode("122001");
+//        h3.setLatitude(28.4595);
+//        h3.setLongitude(77.0266);
+//        h3.setRating(4.9);
+//        h3.setEarnings(48000.0);
+//        h3.setSkills("Woodwork, Furniture Making, Repairs");
+//        h3.setHourlyRate(450.0);
+//        h3.setVerificationStatus(true);
+//        h3.setLanguages("Hindi, English");
+//        h3.setCompletedJobsCount(400);
+//
+//        Handyman h4 = new Handyman();
+//        h4.setName("Vikas Painter");
+//        h4.setContactDetails("9877778888");
+//        h4.setEmail("vikas.painter@example.com");
+//        h4.setPassword("securePass321");
+//        h4.setProfilePhoto("vikas_photo.jpg");
+//        h4.setExperience("6 years");
+//        h4.setCertifications("Certified Painter");
+//        h4.setPortfolio("portfolio_vikas.pdf");
+//        h4.setAvailability("Mon-Fri 10am-6pm");
+//        h4.setLocation("Delhi");
+//        h4.setAddressLine("321 Painter Lane");
+//        h4.setCity("Delhi");
+//        h4.setState("Delhi");
+//        h4.setCountry("India");
+//        h4.setPostalCode("110045");
+//        h4.setLatitude(28.7041);
+//        h4.setLongitude(77.1025);
+//        h4.setRating(4.6);
+//        h4.setEarnings(30000.0);
+//        h4.setSkills("Wall Painting, House Painting, Commercial Painting");
+//        h4.setHourlyRate(300.0);
+//        h4.setVerificationStatus(true);
+//        h4.setLanguages("Hindi, English");
+//        h4.setCompletedJobsCount(270);
+//
+//        Handyman h5 = new Handyman();
+//        h5.setName("Manish AC Mechanic");
+//        h5.setContactDetails("9879990000");
+//        h5.setEmail("manish.acmechanic@example.com");
+//        h5.setPassword("securePass654");
+//        h5.setProfilePhoto("manish_photo.jpg");
+//        h5.setExperience("8 years");
+//        h5.setCertifications("Certified AC Technician");
+//        h5.setPortfolio("portfolio_manish.pdf");
+//        h5.setAvailability("Mon-Sat 9am-6pm");
+//        h5.setLocation("Faridabad");
+//        h5.setAddressLine("654 AC Service St");
+//        h5.setCity("Faridabad");
+//        h5.setState("Haryana");
+//        h5.setCountry("India");
+//        h5.setPostalCode("121001");
+//        h5.setLatitude(28.4089);
+//        h5.setLongitude(77.3178);
+//        h5.setRating(4.8);
+//        h5.setEarnings(42000.0);
+//        h5.setSkills("AC Repair, Installation, Maintenance");
+//        h5.setHourlyRate(500.0);
+//        h5.setVerificationStatus(true);
+//        h5.setLanguages("Hindi, English");
+//        h5.setCompletedJobsCount(350);
+//
+//        // Save all data
 //        handymanService.save(h1);
 //        handymanService.save(h2);
 //        handymanService.save(h3);
 //        handymanService.save(h4);
 //        handymanService.save(h5);
+//
 //
 //        // --- SERVICE CATEGORIES ---
 //        ServiceCategory c1 = new ServiceCategory("Electrical", "Fan, lights, wiring and electrical repair", 500.0, "icons/electrical.png", true);
@@ -202,7 +318,7 @@ public class DataLoader implements CommandLineRunner {
 //        supportTicketService.save(t3);
 //        supportTicketService.save(t4);
 //        supportTicketService.save(t5);
-//        
+        
         
         System.out.println("✅ Dummy data inserted successfully!");
     }
