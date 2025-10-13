@@ -28,11 +28,11 @@ public class SecurityConfig {
     	  .cors(Customizer.withDefaults())
           .csrf(csrf -> csrf.disable())
           .authorizeHttpRequests(auth -> auth
-              .requestMatchers(
-                  "api/users/login", "api/users/register", 
-                  "api/handymen/login", "api/handymen/register", 
-                  "/swagger-ui/**", "/v3/api-docs/**",
-                  "/swagger-resources/**", "/webjars/**")
+        		  .requestMatchers(
+        			        "/api/users/login", "/api/users/register", 
+        			        "/api/handymen/login", "/api/handymen/register", 
+        			        "/swagger-ui/**", "/v3/api-docs/**",
+        			        "/swagger-resources/**", "/webjars/**")
               .permitAll()
               .anyRequest().authenticated()
           )

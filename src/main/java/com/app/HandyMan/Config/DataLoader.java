@@ -1,11 +1,14 @@
 package com.app.HandyMan.Config;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import com.app.HandyMan.Dtos.HandymanRegistrationDto;
+import com.app.HandyMan.Dtos.UsersRegistrationDto;
 import com.app.HandyMan.Entity.Admin;
 import com.app.HandyMan.Entity.Booking;
 import com.app.HandyMan.Entity.Handyman;
@@ -22,20 +25,24 @@ import com.app.HandyMan.Repository.HandymanRepo;
 import com.app.HandyMan.Repository.UserRepo;
 import com.app.HandyMan.Service.AdminService;
 import com.app.HandyMan.Service.BookingService;
+import com.app.HandyMan.Service.HandymanService;
 import com.app.HandyMan.Service.JobService;
 import com.app.HandyMan.Service.NotificationService;
 import com.app.HandyMan.Service.PaymentService;
 import com.app.HandyMan.Service.ReviewService;
 import com.app.HandyMan.Service.ServiceCategoryService;
 import com.app.HandyMan.Service.SupportTicketService;
+import com.app.HandyMan.Service.UserService;
 
 
 @Component
 public class DataLoader implements CommandLineRunner {
 
-	@Autowired private UserRepo userService;
+	@Autowired private UserService userService;
+	@Autowired private UserRepo userRepo;
     @Autowired private AdminService adminService;
-    @Autowired private HandymanRepo handymanService;
+    @Autowired private HandymanService handymanService;
+    @Autowired private HandymanRepo handymanRepo;
     @Autowired private ServiceCategoryService serviceCategoryService;
     @Autowired private JobService jobService;
     @Autowired private BookingService bookingService;
@@ -47,16 +54,27 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 //        // --- USERS ---
-//        User u1 = new User(); u1.setName("Yuvraj Singh Paliwal"); u1.setEmail("yuvi@gmail.com"); u1.setPhone("9876543210"); u1.setPassword("$2a$12$X7WPpKQqRujyhojXy26KfucocyL.znsejBUlsxVN.krbiJZLcFO4G");
-//        User u2 = new User(); u2.setName("Navpreet Singh panesar"); u2.setEmail("nav@example.com"); u2.setPhone("9123456780"); u2.setPassword("$2a$12$9OeQVCIxlgFELSSGHs7CyOZvILodzR4AFIAyTJR4Kfdq1XQ/A8HeS");
-//        User u3 = new User(); u3.setName("John Doe"); u3.setEmail("john@example.com"); u3.setPhone("9988776655");
-//        User u4 = new User(); u4.setName("Priya Singh"); u4.setEmail("priya@example.com"); u4.setPhone("9000000000");
-//        User u5 = new User(); u5.setName("Aman Verma"); u5.setEmail("aman@example.com"); u5.setPhone("9111111111");
+//        UsersRegistrationDto u1 = new UsersRegistrationDto(); u1.setName("Yuvraj Singh Paliwal"); u1.setEmail("yuvi@gmail.com"); u1.setPhone("9876543210"); u1.setPassword("Yuvi@123");
+//        UsersRegistrationDto u2 = new UsersRegistrationDto(); u2.setName("Navpreet Singh panesar"); u2.setEmail("nav@example.com"); u2.setPhone("9123456780"); u2.setPassword("Nav@123");
+//        UsersRegistrationDto u3 = new UsersRegistrationDto(); u3.setName("John Doe"); u3.setEmail("john@example.com"); u3.setPhone("9988776655");u3.setPassword("Test@123");
+//        UsersRegistrationDto u4 = new UsersRegistrationDto(); u4.setName("Priya Singh"); u4.setEmail("priya@example.com"); u4.setPhone("9000000000");u4.setPassword("Test@123");
+//        UsersRegistrationDto u5 = new UsersRegistrationDto(); u5.setName("Aman Verma"); u5.setEmail("aman@example.com"); u5.setPhone("9111111111");u5.setPassword("Test@123");
 //        userService.save(u1);
 //        userService.save(u2);
 //        userService.save(u3);
 //        userService.save(u4);
 //        userService.save(u5);
+//        
+//        Optional<User> user1=userRepo.findByEmail(u1.getEmail());
+//        User u11=user1.get();
+//        Optional<User> user2=userRepo.findByEmail(u2.getEmail());
+//        User u12=user2.get();
+//        Optional<User> user3=userRepo.findByEmail(u3.getEmail());
+//        User u13=user3.get();
+//        Optional<User> user4=userRepo.findByEmail(u4.getEmail());
+//        User u14=user4.get();
+//        Optional<User> user5=userRepo.findByEmail(u5.getEmail());
+//        User u15=user5.get();
 //
 //        // --- ADMINS ---
 //        Admin a1 = new Admin(); a1.setUsername("admin1"); a1.setPassword("pass"); a1.setEmail("admin1@sys.com");
@@ -71,7 +89,7 @@ public class DataLoader implements CommandLineRunner {
 //        adminService.save(a5);
 //
 //        // --- HANDYMEN ---
-//        Handyman h1 = new Handyman();
+//        HandymanRegistrationDto h1 = new HandymanRegistrationDto();
 //        h1.setName("Raj Electrician");
 //        h1.setContactDetails("9871112222");
 //        h1.setEmail("raj.electrician@example.com");
@@ -89,15 +107,12 @@ public class DataLoader implements CommandLineRunner {
 //        h1.setPostalCode("110001");
 //        h1.setLatitude(28.7041);
 //        h1.setLongitude(77.1025);
-//        h1.setRating(4.5);
-//        h1.setEarnings(25000.0);
 //        h1.setSkills("Electrical Wiring, Repair, Installation");
 //        h1.setHourlyRate(400.0);
 //        h1.setVerificationStatus(true);
 //        h1.setLanguages("Hindi, English");
-//        h1.setCompletedJobsCount(220);
 //
-//        Handyman h2 = new Handyman();
+//        HandymanRegistrationDto h2 = new HandymanRegistrationDto();
 //        h2.setName("Amit Plumber");
 //        h2.setContactDetails("9873334444");
 //        h2.setEmail("amit.plumber@example.com");
@@ -115,15 +130,12 @@ public class DataLoader implements CommandLineRunner {
 //        h2.setPostalCode("201301");
 //        h2.setLatitude(28.5355);
 //        h2.setLongitude(77.3910);
-//        h2.setRating(4.7);
-//        h2.setEarnings(37000.0);
 //        h2.setSkills("Pipe Installation, Leak Repair, Drain Cleaning");
 //        h2.setHourlyRate(350.0);
 //        h2.setVerificationStatus(true);
 //        h2.setLanguages("Hindi, English");
-//        h2.setCompletedJobsCount(310);
 //
-//        Handyman h3 = new Handyman();
+//        HandymanRegistrationDto h3 = new HandymanRegistrationDto();
 //        h3.setName("Suresh Carpenter");
 //        h3.setContactDetails("9875556666");
 //        h3.setEmail("suresh.carpenter@example.com");
@@ -141,15 +153,12 @@ public class DataLoader implements CommandLineRunner {
 //        h3.setPostalCode("122001");
 //        h3.setLatitude(28.4595);
 //        h3.setLongitude(77.0266);
-//        h3.setRating(4.9);
-//        h3.setEarnings(48000.0);
 //        h3.setSkills("Woodwork, Furniture Making, Repairs");
 //        h3.setHourlyRate(450.0);
 //        h3.setVerificationStatus(true);
 //        h3.setLanguages("Hindi, English");
-//        h3.setCompletedJobsCount(400);
 //
-//        Handyman h4 = new Handyman();
+//        HandymanRegistrationDto h4 = new HandymanRegistrationDto();
 //        h4.setName("Vikas Painter");
 //        h4.setContactDetails("9877778888");
 //        h4.setEmail("vikas.painter@example.com");
@@ -167,15 +176,12 @@ public class DataLoader implements CommandLineRunner {
 //        h4.setPostalCode("110045");
 //        h4.setLatitude(28.7041);
 //        h4.setLongitude(77.1025);
-//        h4.setRating(4.6);
-//        h4.setEarnings(30000.0);
 //        h4.setSkills("Wall Painting, House Painting, Commercial Painting");
 //        h4.setHourlyRate(300.0);
 //        h4.setVerificationStatus(true);
 //        h4.setLanguages("Hindi, English");
-//        h4.setCompletedJobsCount(270);
 //
-//        Handyman h5 = new Handyman();
+//        HandymanRegistrationDto h5 = new HandymanRegistrationDto();
 //        h5.setName("Manish AC Mechanic");
 //        h5.setContactDetails("9879990000");
 //        h5.setEmail("manish.acmechanic@example.com");
@@ -193,13 +199,10 @@ public class DataLoader implements CommandLineRunner {
 //        h5.setPostalCode("121001");
 //        h5.setLatitude(28.4089);
 //        h5.setLongitude(77.3178);
-//        h5.setRating(4.8);
-//        h5.setEarnings(42000.0);
 //        h5.setSkills("AC Repair, Installation, Maintenance");
 //        h5.setHourlyRate(500.0);
 //        h5.setVerificationStatus(true);
 //        h5.setLanguages("Hindi, English");
-//        h5.setCompletedJobsCount(350);
 //
 //        // Save all data
 //        handymanService.save(h1);
@@ -207,6 +210,17 @@ public class DataLoader implements CommandLineRunner {
 //        handymanService.save(h3);
 //        handymanService.save(h4);
 //        handymanService.save(h5);
+//        
+//        Optional<Handyman> handyman1=handymanRepo.findByEmail(h1.getEmail());
+//        Handyman h11=handyman1.get();
+//        Optional<Handyman> handyman2=handymanRepo.findByEmail(h2.getEmail());
+//        Handyman h12=handyman2.get();
+//        Optional<Handyman> handyman3=handymanRepo.findByEmail(h3.getEmail());
+//        Handyman h13=handyman3.get();
+//        Optional<Handyman> handyman4=handymanRepo.findByEmail(h4.getEmail());
+//        Handyman h14=handyman4.get();
+//        Optional<Handyman> handyman5=handymanRepo.findByEmail(h5.getEmail());
+//        Handyman h15=handyman5.get();
 //
 //
 //        // --- SERVICE CATEGORIES ---
@@ -248,11 +262,11 @@ public class DataLoader implements CommandLineRunner {
 //        serviceCategoryService.save(c18);
 //
 //        // --- JOBS ---
-//        Job j1 = new Job(); j1.setCustomer(u1); j1.setHandyman(h1); j1.setServiceCategory(c1); j1.setDescription("Fan repair");
-//        Job j2 = new Job(); j2.setCustomer(u2); j2.setHandyman(h2); j2.setServiceCategory(c2); j2.setDescription("Fix kitchen sink");
-//        Job j3 = new Job(); j3.setCustomer(u3); j3.setHandyman(h3); j3.setServiceCategory(c3); j3.setDescription("Make wooden shelf");
-//        Job j4 = new Job(); j4.setCustomer(u4); j4.setHandyman(h4); j4.setServiceCategory(c4); j4.setDescription("Repaint living room");
-//        Job j5 = new Job(); j5.setCustomer(u5); j5.setHandyman(h5); j5.setServiceCategory(c5); j5.setDescription("AC gas refill");
+//        Job j1 = new Job(); j1.setCustomer(u11); j1.setHandyman(h11); j1.setServiceCategory(c1); j1.setDescription("Fan repair");
+//        Job j2 = new Job(); j2.setCustomer(u12); j2.setHandyman(h12); j2.setServiceCategory(c2); j2.setDescription("Fix kitchen sink");
+//        Job j3 = new Job(); j3.setCustomer(u13); j3.setHandyman(h13); j3.setServiceCategory(c3); j3.setDescription("Make wooden shelf");
+//        Job j4 = new Job(); j4.setCustomer(u14); j4.setHandyman(h14); j4.setServiceCategory(c4); j4.setDescription("Repaint living room");
+//        Job j5 = new Job(); j5.setCustomer(u15); j5.setHandyman(h15); j5.setServiceCategory(c5); j5.setDescription("AC gas refill");
 //        jobService.save(j1);
 //        jobService.save(j2);
 //        jobService.save(j3);
@@ -272,11 +286,11 @@ public class DataLoader implements CommandLineRunner {
 //        bookingService.save(b5);
 //
 //        // --- PAYMENTS ---
-//        Payment p1 = new Payment(); p1.setPayer(u1); p1.setBooking(b1); p1.setAmount(500.0); p1.setPaymentMethod(PaymentMethod.CASH); p1.setPaymentStatus(PaymentStatus.SUCCESS);
-//        Payment p2 = new Payment(); p2.setPayer(u2); p2.setBooking(b2); p2.setAmount(800.0); p2.setPaymentMethod(PaymentMethod.UPI); p2.setPaymentStatus(PaymentStatus.SUCCESS);
-//        Payment p3 = new Payment(); p3.setPayer(u3); p3.setBooking(b3); p3.setAmount(1200.0); p3.setPaymentMethod(PaymentMethod.CREDIT_CARD); p3.setPaymentStatus(PaymentStatus.PENDING);
-//        Payment p4 = new Payment(); p4.setPayer(u4); p4.setBooking(b4); p4.setAmount(1500.0); p4.setPaymentMethod(PaymentMethod.DEBIT_CARD); p4.setPaymentStatus(PaymentStatus.SUCCESS);
-//        Payment p5 = new Payment(); p5.setPayer(u5); p5.setBooking(b5); p5.setAmount(2000.0); p5.setPaymentMethod(PaymentMethod.BANK_TRANSFER); p5.setPaymentStatus(PaymentStatus.FAILED);
+//        Payment p1 = new Payment(); p1.setPayer(u11); p1.setBooking(b1); p1.setAmount(500.0); p1.setPaymentMethod(PaymentMethod.CASH); p1.setPaymentStatus(PaymentStatus.SUCCESS);
+//        Payment p2 = new Payment(); p2.setPayer(u12); p2.setBooking(b2); p2.setAmount(800.0); p2.setPaymentMethod(PaymentMethod.UPI); p2.setPaymentStatus(PaymentStatus.SUCCESS);
+//        Payment p3 = new Payment(); p3.setPayer(u13); p3.setBooking(b3); p3.setAmount(1200.0); p3.setPaymentMethod(PaymentMethod.CREDIT_CARD); p3.setPaymentStatus(PaymentStatus.PENDING);
+//        Payment p4 = new Payment(); p4.setPayer(u14); p4.setBooking(b4); p4.setAmount(1500.0); p4.setPaymentMethod(PaymentMethod.DEBIT_CARD); p4.setPaymentStatus(PaymentStatus.SUCCESS);
+//        Payment p5 = new Payment(); p5.setPayer(u15); p5.setBooking(b5); p5.setAmount(2000.0); p5.setPaymentMethod(PaymentMethod.BANK_TRANSFER); p5.setPaymentStatus(PaymentStatus.FAILED);
 //        paymentService.save(p1);
 //        paymentService.save(p2);
 //        paymentService.save(p3);
@@ -284,11 +298,11 @@ public class DataLoader implements CommandLineRunner {
 //        paymentService.save(p5);
 //
 //        // --- REVIEWS ---
-//        Review r1 = new Review(); r1.setReviewer(u1); r1.setHandyman(h1); r1.setRating(5); r1.setComments("Great work!");
-//        Review r2 = new Review(); r2.setReviewer(u2); r2.setHandyman(h2); r2.setRating(4); r2.setComments("Good plumber.");
-//        Review r3 = new Review(); r3.setReviewer(u3); r3.setHandyman(h3); r3.setRating(5); r3.setComments("Excellent carpenter!");
-//        Review r4 = new Review(); r4.setReviewer(u4); r4.setHandyman(h4); r4.setRating(3); r4.setComments("Average painting.");
-//        Review r5 = new Review(); r5.setReviewer(u5); r5.setHandyman(h5); r5.setRating(4); r5.setComments("AC fixed well.");
+//        Review r1 = new Review(); r1.setReviewer(u11); r1.setHandyman(h11); r1.setRating(5); r1.setComments("Great work!");
+//        Review r2 = new Review(); r2.setReviewer(u12); r2.setHandyman(h12); r2.setRating(4); r2.setComments("Good plumber.");
+//        Review r3 = new Review(); r3.setReviewer(u13); r3.setHandyman(h13); r3.setRating(5); r3.setComments("Excellent carpenter!");
+//        Review r4 = new Review(); r4.setReviewer(u14); r4.setHandyman(h14); r4.setRating(3); r4.setComments("Average painting.");
+//        Review r5 = new Review(); r5.setReviewer(u15); r5.setHandyman(h15); r5.setRating(4); r5.setComments("AC fixed well.");
 //        reviewService.save(r1);
 //        reviewService.save(r2);
 //        reviewService.save(r3);
@@ -296,11 +310,11 @@ public class DataLoader implements CommandLineRunner {
 //        reviewService.save(r5);
 //
 //        // --- NOTIFICATIONS ---
-//        Notification n1 = new Notification(); n1.setRecipient(u1); n1.setMessage("Your booking is confirmed."); n1.setType("EMAIL");
-//        Notification n2 = new Notification(); n2.setRecipient(u2); n2.setMessage("Your payment is successful."); n2.setType("SMS");
-//        Notification n3 = new Notification(); n3.setRecipient(u3); n3.setMessage("Handyman has arrived."); n3.setType("PUSH");
-//        Notification n4 = new Notification(); n4.setRecipient(u4); n4.setMessage("Job completed!"); n4.setType("IN_APP");
-//        Notification n5 = new Notification(); n5.setRecipient(u5); n5.setMessage("Payment failed."); n5.setType("EMAIL");
+//        Notification n1 = new Notification(); n1.setRecipient(u11); n1.setMessage("Your booking is confirmed."); n1.setType("EMAIL");
+//        Notification n2 = new Notification(); n2.setRecipient(u12); n2.setMessage("Your payment is successful."); n2.setType("SMS");
+//        Notification n3 = new Notification(); n3.setRecipient(u13); n3.setMessage("Handyman has arrived."); n3.setType("PUSH");
+//        Notification n4 = new Notification(); n4.setRecipient(u14); n4.setMessage("Job completed!"); n4.setType("IN_APP");
+//        Notification n5 = new Notification(); n5.setRecipient(u15); n5.setMessage("Payment failed."); n5.setType("EMAIL");
 //        notificationService.save(n1);
 //        notificationService.save(n2);
 //        notificationService.save(n3);
@@ -308,17 +322,17 @@ public class DataLoader implements CommandLineRunner {
 //        notificationService.save(n5);
 //
 //        // --- SUPPORT TICKETS ---
-//        SupportTicket t1 = new SupportTicket(); t1.setUser(u1); t1.setSubject("Refund Issue"); t1.setDescription("Refund not received");
-//        SupportTicket t2 = new SupportTicket(); t2.setUser(u2); t2.setSubject("Late Arrival"); t2.setDescription("Handyman arrived late");
-//        SupportTicket t3 = new SupportTicket(); t3.setUser(u3); t3.setSubject("Overcharging"); t3.setDescription("Charged more than quoted");
-//        SupportTicket t4 = new SupportTicket(); t4.setUser(u4); t4.setSubject("App Bug"); t4.setDescription("App keeps crashing");
-//        SupportTicket t5 = new SupportTicket(); t5.setUser(u5); t5.setSubject("Payment Failed"); t5.setDescription("UPI transaction failed");
+//        SupportTicket t1 = new SupportTicket(); t1.setUser(u11); t1.setSubject("Refund Issue"); t1.setDescription("Refund not received");
+//        SupportTicket t2 = new SupportTicket(); t2.setUser(u12); t2.setSubject("Late Arrival"); t2.setDescription("Handyman arrived late");
+//        SupportTicket t3 = new SupportTicket(); t3.setUser(u13); t3.setSubject("Overcharging"); t3.setDescription("Charged more than quoted");
+//        SupportTicket t4 = new SupportTicket(); t4.setUser(u14); t4.setSubject("App Bug"); t4.setDescription("App keeps crashing");
+//        SupportTicket t5 = new SupportTicket(); t5.setUser(u15); t5.setSubject("Payment Failed"); t5.setDescription("UPI transaction failed");
 //        supportTicketService.save(t1);
 //        supportTicketService.save(t2);
 //        supportTicketService.save(t3);
 //        supportTicketService.save(t4);
 //        supportTicketService.save(t5);
-        
+//        
         
         System.out.println("✅ Dummy data inserted successfully!");
     }

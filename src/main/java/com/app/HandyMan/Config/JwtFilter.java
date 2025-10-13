@@ -11,6 +11,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.app.HandyMan.Service.CustomUserDetailsService;
 import com.app.HandyMan.Service.JwtService;
 
 import jakarta.servlet.FilterChain;
@@ -25,7 +26,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Autowired
-    private UserDetailsService userDetailsService; // Inject directly, avoid ApplicationContext
+    private CustomUserDetailsService userDetailsService; // Inject directly, avoid ApplicationContext
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -33,10 +34,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
     	
     	String path = request.getServletPath();
-    	if ("/login".equals(path) || "/register".equals(path)) {
-    	    filterChain.doFilter(request, response);
-    	    return;  // skip JWT check on public endpoints
-    	}
+    	
+    	if (path.startsWith("/api/users/login") || 
+    		    path.startsWith("/api/users/register") ||
+    		    path.startsWith("/api/handymen/login") ||
+    		    path.startsWith("/api/handymen/register")) {
+    		    filterChain.doFilter(request, response);
+    		    return;
+    		}
 
     	
         String authHeader = request.getHeader("Authorization");

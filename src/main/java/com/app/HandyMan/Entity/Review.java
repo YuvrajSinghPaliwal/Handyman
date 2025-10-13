@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 import com.app.HandyMan.Config.Auditable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "reviews")
@@ -14,10 +15,12 @@ public class Review extends Auditable {
 
     @ManyToOne
     @JoinColumn(name = "reviewer_id")
+    @JsonIgnore
     private User reviewer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "handyman_id")
+    @JsonIgnore
     private Handyman handyman;
 
     private Integer rating;
